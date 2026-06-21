@@ -19,7 +19,7 @@ android.api = 34
 android.minapi = 24
 
 # 🔥 ВАЖНО — фикс стабильной версии p4a
-p4a.branch = release-2023.09.16
+# p4a.branch = release-2023.09.16
 
 android.archs = arm64-v8a, armeabi-v7a
 
