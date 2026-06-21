@@ -14,39 +14,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: CLEAN EVERYTHING (fix broken SDK state)
+      - name: HARD CLEAN (fix broken SDK state)
         run: |
           rm -rf .buildozer
           rm -rf ~/.buildozer
-          rm -rf /github/home/.buildozer
           export BUILDOZER_WARN_ON_ROOT=0
 
-      - name: FIX SDK + ACCEPT LICENSES (CRITICAL)
+      - name: FORCE STABLE BUILD SETTINGS
         run: |
-          export ANDROID_SDK_ROOT=/github/home/.buildozer/android/platform/android-sdk
-          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+          echo "p4a.branch = stable" >> buildozer.spec
+          echo "android.build_tools_version = 34.0.0" >> buildozer.spec
 
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-      - name: FORCE INSTALL CORRECT BUILD TOOLS (NO 37)
-        run: |
-          export ANDROID_SDK_ROOT=/github/home/.buildozer/android/platform/android-sdk
-          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
-
-          sdkmanager "platform-tools" \
-                     "platforms;android-34" \
-                     "build-tools;34.0.0"
-
-      - name: BUILD APK
+      - name: BUILD APK (ONLY BUILDOZER)
         run: |
           export BUILDOZER_WARN_ON_ROOT=0
           export P4A_NO_BINREPO_UPDATE=1
-          export ANDROIDAPI=34
-          export ANDROIDMINAPI=24
-
           buildozer -v android debug
 
-      - name: Upload APK
+      - name: UPLOAD APK
         uses: actions/upload-artifact@v4
         with:
           name: apk
