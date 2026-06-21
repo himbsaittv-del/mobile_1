@@ -1,5 +1,7 @@
 [app]
+
 title = MyPdfApp
+
 package.name = mypdfapp
 package.domain = org.example
 
@@ -18,8 +20,11 @@ icon.filename = icon.png
 android.api = 34
 android.minapi = 24
 
-# 🔥 ВАЖНО — фикс стабильной версии p4a
-# p4a.branch = release-2023.09.16
+# ⚠️ лучше убрать принудительную версию build-tools
+android.build_tools_version = 34.0.0
+
+p4a.branch = master
+android.release_artifact = apk
 
 android.archs = arm64-v8a, armeabi-v7a
 
@@ -27,6 +32,6 @@ android.permissions = READ_EXTERNAL_STORAGE
 
 presplash.color = #FFFFFF
 
-[buildozer]
-log_level = 2
-warn_on_root = 0
+# 🔥 ДОБАВЛЕНО ТЕБЕ
+android.accept_sdk_license = True
+android.skip_update = False
