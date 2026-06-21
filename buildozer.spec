@@ -20,9 +20,8 @@ icon.filename = icon.png
 android.api = 34
 android.minapi = 24
 android.build_tools_version = 34.0.0
-
-# фикс, чтобы не тянул unstable версии
 p4a.branch = stable
+
 
 android.archs = arm64-v8a, armeabi-v7a
 
