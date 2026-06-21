@@ -23,7 +23,7 @@ android.minapi = 24
 # ⚠️ лучше убрать принудительную версию build-tools
 # android.build_tools_version = 34.0.0
 
-p4a.branch = release-2023.09.16
+p4a.branch = master
 android.release_artifact = apk
 
 android.archs = arm64-v8a, armeabi-v7a
