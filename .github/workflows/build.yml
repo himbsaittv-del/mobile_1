@@ -8,53 +8,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install system deps
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip wget
+          sudo apt install -y \
+            git zip unzip openjdk-17-jdk \
+            autoconf automake libtool pkg-config \
+            build-essential ccache
 
-          pip install --upgrade pip
-          pip install buildozer cython
-
-      - name: Install Android SDK CLEAN
+      - name: Install Python dependencies
         run: |
-          mkdir -p $HOME/android-sdk
-          cd $HOME
+          python -m pip install --upgrade pip
+          pip install cython buildozer
 
-          wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-          unzip commandlinetools-linux-*.zip -d android-sdk/cmdline-tools
+      - name: Cache Buildozer directory
+        uses: actions/cache@v4
+        with:
+          path: .buildozer
+          key: buildozer-${{ runner.os }}-${{ hashFiles('buildozer.spec') }}
+          restore-keys: |
+            buildozer-${{ runner.os }}-
 
-          mv android-sdk/cmdline-tools/cmdline-tools android-sdk/cmdline-tools/latest
-
-          export ANDROID_SDK_ROOT=$HOME/android-sdk
-          export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/latest/bin
-
+      - name: Accept Android licenses (safe)
+        run: |
           yes | sdkmanager --licenses || true
 
-          sdkmanager \
-            "platform-tools" \
-            "platforms;android-34" \
-            "build-tools;34.0.0"
-
-      - name: FORCE Buildozer to NOT use 37
-        run: |
-          echo "android.build_tools_version = 34.0.0" >> buildozer.spec
-          echo "p4a.branch = stable" >> buildozer.spec
-
-          export BUILDOZER_WARN_ON_ROOT=0
-          export ANDROID_SDK_ROOT=$HOME/android-sdk
-          export ANDROID_HOME=$HOME/android-sdk
-
-      - name: Build APK
+      - name: Build APK (Debug)
         run: |
           export BUILDOZER_WARN_ON_ROOT=0
           export P4A_NO_BINREPO_UPDATE=1
-          export ANDROID_SDK_ROOT=$HOME/android-sdk
-          export ANDROID_HOME=$HOME/android-sdk
 
+          buildozer android clean
           buildozer -v android debug
 
       - name: Upload APK
