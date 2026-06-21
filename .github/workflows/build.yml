@@ -1,6 +1,3 @@
-rm -rf .buildozer
-rm -rf ~/.buildozer
-
 name: Build APK
 
 on:
@@ -11,6 +8,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install deps
+        run: |
+          pip install cython buildozer
+
+      - name: Clean Buildozer cache
+        run: |
+          rm -rf .buildozer
+          rm -rf ~/.buildozer
+
+      - name: Build APK
+        run: |
+          buildozer -v android debug
       - name: Checkout
         uses: actions/checkout@v4
 
