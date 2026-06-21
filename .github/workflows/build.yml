@@ -14,20 +14,30 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Clean old build (IMPORTANT FIX)
+      - name: HARD CLEAN (fix build-tools 37 cache)
         run: |
           rm -rf .buildozer
           rm -rf ~/.buildozer
+          rm -rf /github/home/.buildozer
           export BUILDOZER_WARN_ON_ROOT=0
 
-      - name: Build APK with Buildozer
+      - name: FORCE BUILD TOOLS VERSION (CRITICAL FIX)
+        run: |
+          echo "android.build_tools_version = 34.0.0" >> buildozer.spec
+          echo "p4a.branch = stable" >> buildozer.spec
+
+      - name: Build APK (NO SDKMANAGER, NO INTERFERENCE)
         run: |
           export BUILDOZER_WARN_ON_ROOT=0
           export P4A_NO_BINREPO_UPDATE=1
+          export ANDROIDAPI=34
+          export ANDROIDMINAPI=24
+          export ANDROIDNDK=25b
+
           buildozer -v android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: MyPdfApp-APK
+          name: MyPdfApp
           path: bin/*.apk
