@@ -19,16 +19,21 @@ icon.filename = icon.png
 
 android.api = 34
 android.minapi = 24
-android.build_tools_version = 34.0.0
-p4a.branch = stable
 
+# ⚠️ лучше убрать принудительную версию build-tools
+# android.build_tools_version = 34.0.0
+
+p4a.branch = stable
 
 android.archs = arm64-v8a, armeabi-v7a
 
-# убираем MANAGE_EXTERNAL_STORAGE (он часто ломает/не проходит сборку/плеймаркет)
 android.permissions = READ_EXTERNAL_STORAGE
 
 presplash.color = #FFFFFF
+
+# 🔥 ДОБАВЛЕНО ТЕБЕ
+android.accept_sdk_license = True
+android.skip_update = False
 
 
 [buildozer]
