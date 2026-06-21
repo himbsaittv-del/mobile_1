@@ -10,7 +10,7 @@ source.include_exts = py,png,jpg,kv,pdf
 
 version = 0.1
 
-requirements = python3,kivy,plyer,PyMuPDF
+requirements = python3,kivy,plyer,pyfreetype2
 
 orientation = portrait
 fullscreen = 0
