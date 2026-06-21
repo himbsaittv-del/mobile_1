@@ -1,0 +1,148 @@
+#:kivy 2.3.0
+
+#:import Window kivy.core.window.Window
+
+# ======== БАЗОВЫЙ МАКЕТ ========
+#:set DESIGN_W 1080
+#:set DESIGN_H 2400
+
+#:set HEADER_H 280
+#:set FOOTER_H 280
+
+#:set BG 18/255
+
+# header1
+#:set H1_W 30
+#:set H1_H 33
+#:set H1_LEFT 54
+#:set H1_TOP 150
+
+# header2
+#:set H2_W 35
+#:set H2_H 36
+#:set H2_RIGHT 110
+#:set H2_TOP 142
+
+# текст
+#:set TITLE_LEFT 198
+#:set TITLE_TOP 153
+#:set TITLE_SIZE 22
+
+# масштаб
+#:set SX Window.width/DESIGN_W
+#:set SY Window.height/DESIGN_H
+
+
+<HeaderBar@FloatLayout>
+
+    size_hint_y: None
+    height: HEADER_H*SY
+
+    canvas.before:
+        Color:
+            rgba: BG, BG, BG, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Image:
+        source: "header1.png"
+        size_hint: None,None
+        size: H1_W*SX, H1_H*SY
+
+        pos:
+            H1_LEFT*SX,\
+            self.parent.y + self.parent.height - H1_TOP*SY - H1_H*SY
+
+    Image:
+        source: "header2.png"
+        size_hint: None,None
+        size: H2_W*SX, H2_H*SY
+
+        pos:
+            Window.width - H2_RIGHT*SX - H2_W*SX,\
+            self.parent.y + self.parent.height - H2_TOP*SY - H2_H*SY
+
+    Label:
+
+        text: "Квитанция"
+
+        color: 1,1,1,1
+
+        font_size: TITLE_SIZE*SX
+
+        size_hint: None,None
+
+        size: self.texture_size
+
+        pos:
+            TITLE_LEFT*SX,\
+            self.parent.y + self.parent.height - TITLE_TOP*SY - self.texture_size[1]
+
+
+<FooterBar@BoxLayout>
+
+    size_hint_y: None
+    height: FOOTER_H*SY
+
+    canvas.before:
+        Color:
+            rgba: BG, BG, BG, 1
+
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+<SelectScreen>
+
+    BoxLayout:
+        orientation: "vertical"
+
+        canvas.before:
+            Color:
+                rgba: 1,1,1,1
+
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        HeaderBar:
+
+        AnchorLayout:
+
+            Button:
+                text: "Загрузить PDF"
+
+                size_hint: None,None
+                size: 220*SX,60*SY
+
+                on_release:
+                    root.open_pdf()
+
+        FooterBar:
+
+
+<ViewerScreen>
+
+    BoxLayout:
+        orientation: "vertical"
+
+        canvas.before:
+            Color:
+                rgba: 1,1,1,1
+
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        HeaderBar:
+
+        AnchorLayout:
+
+            Image:
+                id: pdf_image
+
+                size_hint: .95,.95
+
+        FooterBar:
