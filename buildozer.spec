@@ -1,37 +1,36 @@
-[buildozer]
+[app]
 
+# 🔥 ОБЯЗАТЕЛЬНЫЕ ПОЛЯ
 title = MyPdfApp
-
 package.name = mypdfapp
 package.domain = org.example
 
 source.dir = .
-source.include_exts = py,png,jpg,kv,pdf
+source.include_exts = py,png,jpg,kv,atlas,ttf
 
-version = 0.1
+version = 1.0
 
-requirements = python3,kivy,plyer,pyfreetype2
+# 🔥 Python / зависимости
+requirements = python3,kivy,plyer
 
+# 🔥 Android настройки
 orientation = portrait
 fullscreen = 0
 
-icon.filename = icon.png
+# 🔥 permissions (если нужны)
+android.permissions = INTERNET
 
+# 🔥 SDK настройки
 android.api = 34
 android.minapi = 24
+android.ndk = 27.3.13750724
 
-# ⚠️ лучше убрать принудительную версию build-tools
-android.build_tools_version = 34.0.0
+# 🔥 архитектуры
+android.archs = arm64-v8a,armeabi-v7a
 
-p4a.branch = master
-android.release_artifact = apk
+# ------------------------
 
-android.archs = arm64-v8a, armeabi-v7a
+[buildozer]
 
-android.permissions = READ_EXTERNAL_STORAGE
-
-presplash.color = #FFFFFF
-
-# 🔥 ДОБАВЛЕНО ТЕБЕ
-android.accept_sdk_license = True
-android.skip_update = False
+log_level = 2
+warn_on_root = 0
