@@ -14,9 +14,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Clean cache
+        run: |
+          rm -rf .buildozer
+          rm -rf ~/.buildozer
+          export BUILDOZER_WARN_ON_ROOT=0
+
       - name: Build APK
         run: |
           export BUILDOZER_WARN_ON_ROOT=0
+          export P4A_NO_BINREPO_UPDATE=1
           buildozer -v android debug
 
       - name: Upload APK
