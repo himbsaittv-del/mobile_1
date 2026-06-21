@@ -11,16 +11,16 @@ jobs:
       image: ghcr.io/kivy/buildozer:latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Clean cache
+      - name: Clean old build (IMPORTANT FIX)
         run: |
           rm -rf .buildozer
           rm -rf ~/.buildozer
           export BUILDOZER_WARN_ON_ROOT=0
 
-      - name: Build APK
+      - name: Build APK with Buildozer
         run: |
           export BUILDOZER_WARN_ON_ROOT=0
           export P4A_NO_BINREPO_UPDATE=1
@@ -29,5 +29,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: apk
+          name: MyPdfApp-APK
           path: bin/*.apk
